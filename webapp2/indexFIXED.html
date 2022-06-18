@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/FloridaWindZones_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[26.123675605951902,-86.03115588575467],[30.95066194170521,-79.24094391240396]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_Satelite_0');
+        map.getPane('pane_Satelite_0').style.zIndex = 400;
+        var layer_Satelite_0 = L.tileLayer('https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
+            pane: 'pane_Satelite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_Satelite_0;
+        map.addLayer(layer_Satelite_0);
+        map.createPane('pane_KeelandCurleyWinery572022orthophoto_modified_1');
+        map.getPane('pane_KeelandCurleyWinery572022orthophoto_modified_1').style.zIndex = 401;
+        var img_KeelandCurleyWinery572022orthophoto_modified_1 = 'data/KeelandCurleyWinery572022orthophoto_modified_1.png';
+        var img_bounds_KeelandCurleyWinery572022orthophoto_modified_1 = [[28.04694513765239,-82.18939455082506],[28.048885762693228,-82.18699908891062]];
+        var layer_KeelandCurleyWinery572022orthophoto_modified_1 = new L.imageOverlay(img_KeelandCurleyWinery572022orthophoto_modified_1,
+                                              img_bounds_KeelandCurleyWinery572022orthophoto_modified_1,
+                                              {pane: 'pane_KeelandCurleyWinery572022orthophoto_modified_1'});
+        bounds_group.addLayer(layer_KeelandCurleyWinery572022orthophoto_modified_1);
+        map.addLayer(layer_KeelandCurleyWinery572022orthophoto_modified_1);
+        function pop_FloridaWindZones_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Speed</th>\
+                        <td>' + (feature.properties['Speed'] !== null ? autolinker.link(feature.properties['Speed'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_FloridaWindZones_2_0(feature) {
+            if (feature.properties['Speed'] >= 120.000000 && feature.properties['Speed'] <= 128.888889 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,0.2)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Speed'] >= 128.888889 && feature.properties['Speed'] <= 137.777778 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,223,223,0.2)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Speed'] >= 137.777778 && feature.properties['Speed'] <= 146.666667 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,191,191,0.2)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Speed'] >= 146.666667 && feature.properties['Speed'] <= 155.555556 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,159,159,0.2)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Speed'] >= 155.555556 && feature.properties['Speed'] <= 164.444444 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,128,128,0.2)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Speed'] >= 164.444444 && feature.properties['Speed'] <= 176.666667 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,96,96,0.2)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Speed'] >= 176.666667 && feature.properties['Speed'] <= 192.222222 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,64,64,0.2)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Speed'] >= 192.222222 && feature.properties['Speed'] <= 201.111111 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,32,32,0.2)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Speed'] >= 201.111111 && feature.properties['Speed'] <= 210.000000 ) {
+                return {
+                pane: 'pane_FloridaWindZones_2',
+                opacity: 1,
+                color: 'rgba(247,247,247,0.2)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,0,0,0.2)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_FloridaWindZones_2');
+        map.getPane('pane_FloridaWindZones_2').style.zIndex = 402;
+        map.getPane('pane_FloridaWindZones_2').style['mix-blend-mode'] = 'normal';
+        var layer_FloridaWindZones_2 = new L.geoJson(json_FloridaWindZones_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_FloridaWindZones_2',
+            layerName: 'layer_FloridaWindZones_2',
+            pane: 'pane_FloridaWindZones_2',
+            onEachFeature: pop_FloridaWindZones_2,
+            style: style_FloridaWindZones_2_0,
+        });
+        bounds_group.addLayer(layer_FloridaWindZones_2);
+        map.addLayer(layer_FloridaWindZones_2);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'FloridaWindZones<br /><table><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_12012890.png" /></td><td>120 - 128.9</td></tr><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_128913781.png" /></td><td>128.9 - 137.8</td></tr><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_137814672.png" /></td><td>137.8 - 146.7</td></tr><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_146715563.png" /></td><td>146.7 - 155.6</td></tr><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_155616444.png" /></td><td>155.6 - 164.4</td></tr><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_164417675.png" /></td><td>164.4 - 176.7</td></tr><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_176719226.png" /></td><td>176.7 - 192.2</td></tr><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_192220117.png" /></td><td>192.2 - 201.1</td></tr><tr><td style="text-align: center;"><img src="legend/FloridaWindZones_2_20112108.png" /></td><td>201.1 - 210</td></tr></table>': layer_FloridaWindZones_2,"Keel-and-Curley-Winery-5-7-2022-orthophoto_modified": layer_KeelandCurleyWinery572022orthophoto_modified_1,"Satelite": layer_Satelite_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_FloridaWindZones_2,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Speed'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        </script>
+    </body>
+</html>
